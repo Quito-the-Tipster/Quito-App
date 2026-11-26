@@ -140,7 +140,7 @@ var ITER=120000;
 var MARKETS=['Over 1.5 goals','Over 2.5 goals','Under 2.5 goals','Under 3.5 goals','Home win','Away win','Draw','Home or draw','Away or draw','Home or away','Both teams to score','Over 1.5 first half','Total points over','Total points under'];
 var SPORTS=[['football','Football'],['womens',"Women's football"],['basketball','Basketball']];
 var CUR=['GHS','NGN','KES','UGX','ZAR','USD','GBP','EUR'];
-var ERR={BAD_NAME:'Use 3 to 20 letters, numbers, dots or underscores.',TAKEN:'That username is taken. Try another.',RESERVED:"That username isn't available.",BAD_LOGIN:'Wrong username or password.',LOCKED:'Too many tries. Wait 10 minutes and try again.',BLOCKED:'This account is blocked. Please contact the admin.',NETWORK:"Can't reach the server. Check your internet and try again.",NO_SETUP:"The server isn't set up yet.",NO_API:'Paste your server link first.',ADMIN_NOT_SET:'Admin password has not been set yet.',BAD_CODE:'That code is wrong or has expired.',TOO_BIG:'Your saved data is too large. Delete some old codes.',BAD_PHONE:'Enter a valid phone number or leave it empty.',BAD_ODDS:'Odds must be 1.01 or more.',BAD_PCT:'Our chance must be between 1 and 99.',BAD_FIELDS:'Fill in both teams and the market.',BAD_DATE:'Choose a valid date.',WEAK:'Password must be at least 8 characters.',FULL:'Sign-ups are full right now.',NOT_FOUND:'Not found.',SERVER:'Something went wrong. Please try again.',BAD_REQUEST:'Something went wrong. Please try again.',BAD_KEY:'That key was not accepted. Check it and try again.',BAD_QUERY:'Type at least 3 letters.',NO_KEY:'Add your data key first (Suggest tab).',NO_LEAGUES:'Add at least one league first.',API_LIMIT:"The data allowance is used up for now (100 calls an hour, 3,000 a month). Try again later.",DRIVE:"Google Drive is not allowed yet. In Apps Script run authorizeDrive once, then deploy a new version.",BAD_CSV:"Could not read that file. Paste the whole CSV, including the first line with the column names.",BAD_LEGS:'One of the games on the ticket is not valid. Reload the games and add it again.',SAME_GAME:'Two picks on the same game cannot be combined here. Keep one pick per game.',BAD_TICKET:'Code must be 4 to 20 letters or numbers.',DUPLICATE:'That code is already listed for this date.',CODE_LOCKED:'A listed code can only be removed within 30 minutes. After that it is part of the record.',PICK_LOCKED:"Picks that have started or have a result are part of the record and can't be removed."};
+var ERR={BAD_FOLDER:'That folder link did not work. Open the folder in Drive, copy the link from the address bar, and make sure you are using the same Google account as this app.',BAD_NAME:'Use 3 to 20 letters, numbers, dots or underscores.',TAKEN:'That username is taken. Try another.',RESERVED:"That username isn't available.",BAD_LOGIN:'Wrong username or password.',LOCKED:'Too many tries. Wait 10 minutes and try again.',BLOCKED:'This account is blocked. Please contact the admin.',NETWORK:"Can't reach the server. Check your internet and try again.",NO_SETUP:"The server isn't set up yet.",NO_API:'Paste your server link first.',ADMIN_NOT_SET:'Admin password has not been set yet.',BAD_CODE:'That code is wrong or has expired.',TOO_BIG:'Your saved data is too large. Delete some old codes.',BAD_PHONE:'Enter a valid phone number or leave it empty.',BAD_ODDS:'Odds must be 1.01 or more.',BAD_PCT:'Our chance must be between 1 and 99.',BAD_FIELDS:'Fill in both teams and the market.',BAD_DATE:'Choose a valid date.',WEAK:'Password must be at least 8 characters.',FULL:'Sign-ups are full right now.',NOT_FOUND:'Not found.',SERVER:'Something went wrong. Please try again.',BAD_REQUEST:'Something went wrong. Please try again.',BAD_KEY:'That key was not accepted. Check it and try again.',BAD_QUERY:'Type at least 3 letters.',NO_KEY:'Add your data key first (Suggest tab).',NO_LEAGUES:'Add at least one league first.',API_LIMIT:"The data allowance is used up for now (100 calls an hour, 3,000 a month). Try again later.",DRIVE:"Google Drive is not allowed yet. In Apps Script run authorizeDrive once, then deploy a new version.",BAD_CSV:"Could not read that file. Paste the whole CSV, including the first line with the column names.",BAD_LEGS:'One of the games on the ticket is not valid. Reload the games and add it again.',SAME_GAME:'Two picks on the same game cannot be combined here. Keep one pick per game.',BAD_TICKET:'Code must be 4 to 20 letters or numbers.',DUPLICATE:'That code is already listed for this date.',CODE_LOCKED:'A listed code can only be removed within 30 minutes. After that it is part of the record.',PICK_LOCKED:"Picks that have started or have a result are part of the record and can't be removed."};
 
 var S={guest:false,view:'boot',tab:'games',seg:{picks:'today',codes:'listed',mine:'codes',apicks:'picks'},gm:{date:'',cache:{},q:'',f:'all',err:'',busy:false},cd:null,atab:'overview',authMode:'login',session:null,vault:null,picks:[],today:'',date:'',open:null,prefill:null,saved:'',stats:null,users:null,q:'',modal:null,toast:'',rec:null,sug:null,leagues:null,lres:null,past:null,sdate:'',thr:Number(lsGet('qt_thr'))||7,sopen:{},odds:{},posted:{},lsport:'football',lb:{date:'',games:null,markets:[],legs:[],busy:false,err:''},lf:{}};
 var app=document.getElementById('app');
@@ -873,7 +873,8 @@ function engCard(){
   var e=S.eng,h='<div class="card"><h3>Data and learning</h3><p class="note" style="margin:0 0 8px;line-height:1.5">Every CSV you upload is saved in a Google Drive folder and kept. Every suggestion uses it, and the model re-tunes itself on it each week.</p>';
   if(!e)return h+'<p class="note" style="margin:0">Loading...</p></div>';
   h+='<div class="row sp"><span class="mut">Matches stored</span><b>'+esc(e.total)+'</b></div>'
-  +'<div class="row sp" style="margin-top:6px"><span class="mut">Drive folder</span>'+(e.drive&&e.drive.url?'<a class="red" href="'+esc(e.drive.url)+'" target="_blank" rel="noopener">'+esc(e.drive.files)+(e.drive.files===1?' file':' files')+' · open</a>':'<b>Not allowed yet</b>')+'</div>'
+  +'<div class="row sp" style="margin-top:6px"><span class="mut">Drive folder</span>'+(e.drive&&e.drive.url?'<a class="red" href="'+esc(e.drive.url)+'" target="_blank" rel="noopener">'+esc(e.drive.name||'Folder')+' · '+esc(e.drive.files)+(e.drive.files===1?' file':' files')+' · open</a>':'<b>Not allowed yet</b>')+'</div>'
+  +'<form data-form="drvfolder" style="margin-top:8px"><label class="lbl" for="dfo">Use a different Drive folder</label><div class="row"><input id="dfo" name="folder" type="text" placeholder="Paste the folder link" autocomplete="off"><button type="submit" class="btn sm" style="width:auto;padding:0 16px">Save</button></div></form>'
   +'<label class="lbl" for="csvf">Upload CSV files</label><input id="csvf" type="file" accept=".csv,text/csv" multiple data-bind="csvfiles">'
   +'<p class="note" style="margin:6px 0 0;line-height:1.5">Pick as many football-data.co.uk files as you like. The league is read from each file.</p>'
   +'<div class="grid2" style="margin-top:12px"><button type="button" class="btn ghost" data-act="drvsync">Check Drive folder</button><button type="button" class="btn" data-act="train">Train models</button></div>';
@@ -898,13 +899,13 @@ function mkGroup(k){
 }
 async function uploadCsvFiles(files){
   if(!files||!files.length)return;
-  setBusy(true);var ok=0,rows=0,bad=[];
+  setBusy(true);var ok=0,rows=0,bad=[],nd=0;
   for(var i=0;i<files.length;i++){
     toast('Reading file '+(i+1)+' of '+files.length+'...');
-    try{var text=await files[i].text();var r=await call({a:'adminUploadCsv',name:files[i].name,csv:text});ok++;rows+=r.rows}
+    try{var text=await files[i].text();var r=await call({a:'adminUploadCsv',name:files[i].name,csv:text});ok++;rows+=r.rows;if(!r.saved)nd++}
     catch(e){if(e&&e.quiet)break;bad.push(files[i].name)}
   }
-  toast(ok+(ok===1?' file':' files')+' saved · '+rows+' matches read'+(bad.length?' · '+bad.length+' not recognised':''));
+  toast(ok+(ok===1?' file':' files')+' read · '+rows+' matches'+(nd?' · '+nd+' NOT saved to Drive, check the folder below':ok?' · saved to your Drive folder':'')+(bad.length?' · '+bad.length+' not recognised':''));
   setBusy(false);await loadEngine();await loadLeagues();
 }
 function sugList(){
@@ -1246,6 +1247,11 @@ var forms={
     if(!f.date)bad(ERR.BAD_DATE,'err3');
     try{await call({a:'adminNoBet',date:f.date,on:true,note:f.note})}catch(e){if(!e.quiet)bad(msg(e),'err3');throw e}
     await adminLoad();render();toast('No bet day set');
+  },
+  drvfolder:async function(f){
+    if(!String(f.folder||'').trim())bad(ERR.BAD_FOLDER);
+    var r=await call({a:'adminSetDriveFolder',folder:f.folder});
+    await loadEngine();toast('Now saving to: '+r.name);
   },
   apikey:async function(f){
     var k=String(f.key||'').trim();
